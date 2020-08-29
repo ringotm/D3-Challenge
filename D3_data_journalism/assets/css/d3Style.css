@@ -25,10 +25,11 @@
 
 /* font size dependent on radius, see app.js */
 .stateText {
-  font-size: 5px;
+  font-size: 9px;
+  font-weight: bold;
   font-family: sans-serif;
-  color: rgb(121, 55, 55);
-  fill: rgb(134, 24, 24);
+  color: rgb(240, 230, 230);
+  fill: rgb(247, 241, 241);
   text-anchor: middle;
 
 }

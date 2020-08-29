@@ -1,4 +1,7 @@
 // @TODO: YOUR CODE HERE!
+
+//function xScale()
+
 function makeResponsive() {
 
     var svgArea = d3.select('body').select("svg");
@@ -7,14 +10,14 @@ function makeResponsive() {
         svgArea.remove();
     };
 
-    var svgWidth = window.innerWidth / 2.6;
-    var svgHeight = window.innerHeight / 2;
+    var svgWidth = window.innerWidth / 2;
+    var svgHeight = window.innerHeight / 1.5;
 
     var margin = {
-        top: 40,
-        bottom: 40,
-        right: 40,
-        left: 40
+        top: 50,
+        bottom: 50,
+        right: 50,
+        left: 50
     };
 
     var height = svgHeight - margin.top - margin.bottom;
@@ -42,11 +45,11 @@ function makeResponsive() {
         });
 
         var xScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d.poverty), d3.max(data, d => d.poverty)])
+            .domain([d3.min(data, d => d.poverty) - 1, d3.max(data, d => d.poverty) + 2])
             .range([0, width]);
 
         var yScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d.obesity), d3.max(data, d => d.obesity)])
+            .domain([d3.min(data, d => d.obesity) - 2, d3.max(data, d => d.obesity) + 2])
             .range([height, 0]);
 
         var xAxis = d3.axisBottom(xScale);
@@ -79,14 +82,38 @@ function makeResponsive() {
             .attr("y", d => yScale(d.obesity))
             .text(d => d.abbr);
 
-        //  chartGroup.append("g")
-        //   .selectAll('text')
-        //   .data(data)
-        //   .append("text")
-        //   .attr("x", d => xScale(d.poverty))
-        //   .attr("y", d => yScale(d.obesity))
-        //   .attr("class", "stateText")
-        //  .text(d => d.abbr);
+        var XaxisGroup = chartGroup.append("g")
+            .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
+        var povertyLabel = XaxisGroup.append("text")
+            .attr("x", 0)
+            .attr("y", 20)
+            .attr("value", "obesity")
+            .classed("active", true)
+            .text("Poverty (%)");
+
+        var YaxisGroup = chartGroup.append("g")
+            .attr("transform", "rotate(-90)");
+
+        var ObesityLabel = YaxisGroup.append("text")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .classed("active", true)
+            .text("Obesity (%)");
+
+        XaxisGroup.selectAll("text")
+            .on("click", function () {
+                var value = d3.select(this).attr("value");
+                if (value !== chosenXaxis) {
+                    chosenXaxis = value;
+
+                    xLinearScale = xScale
+                }
+            }
+            )
+
+
 
 
     });
